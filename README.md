@@ -4,7 +4,8 @@ Welcome! This is my personal repository for experiments and projects in **Artifi
 
 **Background**  
 - B.Sc. Electrical Engineering (Control) – University of Tehran  
-- Preparing for M.Sc. in AI/ML  
+- Preparing for M.Sc. in AI/ML
+- Completed Computer Science Minor program courses, including [Advanced Programming (summary)](courses/advanced_programming.md)
 
 **Main Interests**  
 - Reinforcement Learning (RL)  
