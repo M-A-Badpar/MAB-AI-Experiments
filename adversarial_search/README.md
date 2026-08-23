@@ -4,7 +4,10 @@ A comparison of game-tree search runtimes with and without Alpha-Beta pruning in
 
 ## Evaluation Metric
 Piece score difference with extra weight for kings:
-$$\text{Score} = (\text{Pieces}_{\text{white}} + \text{Kings}_{\text{white}}) - (\text{Pieces}_{\text{red}} + \text{Kings}_{\text{red}})$$
+
+$$
+\text{Score} = (\text{Pieces}_{\text{white}} + \text{Kings}_{\text{white}}) - (\text{Pieces}_{\text{red}} + \text{Kings}_{\text{red}})
+$$
 
 ## Runtime Results
 
