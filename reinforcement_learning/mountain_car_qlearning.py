@@ -115,3 +115,26 @@ class QLearningAgent:
                 break
 
         return scores_array, avg_scores_array, epsilons_array, shaped_scores_array
+
+    def evaluate(self, episodes=100):
+        eval_scores = []
+
+        for episode in range(episodes):
+            obs = self.reset_env(episode)
+            state = self.discretize_state(obs)
+            done = False
+            score = 0
+
+            while not done:
+                action = int(np.argmax(self.Q_table[state]))
+                step_result = self.env.step(action)
+                if len(step_result) == 4:
+                    next_obs, reward, done, _ = step_result
+                else:
+                    next_obs, reward, terminated, truncated, _ = step_result
+                    done = terminated or truncated
+                state = self.discretize_state(next_obs)
+                score += reward
+            eval_scores.append(score)
+            
+        return eval_scores
