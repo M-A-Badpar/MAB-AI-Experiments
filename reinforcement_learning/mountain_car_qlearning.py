@@ -1,7 +1,7 @@
 import math
 import gym
 import numpy as np
-
+from collections import deque
 
 class QLearningAgent:
 
@@ -61,3 +61,57 @@ class QLearningAgent:
         elif self.epsilon_strategy == "logarithmic":
             return max(0.01, 1.0 / (1.0 + 0.1 * math.log(1 + episode)))
         return 0.1
+
+    def train(self):
+        scores_window = deque(maxlen=100)
+
+        scores_array = []
+        avg_scores_array = []
+        epsilons_array = []
+        shaped_scores_array = []
+
+        for episode in range(self.episodes):
+            obs = self.reset_env(episode)
+            state = self.discretize_state(obs)
+            eps = self.get_epsilon(episode)
+
+            done = False
+            current_score = 0
+
+            while not done:
+                action = self.choose_action(state, eps)
+
+                step_result = self.env.step(action)
+                if len(step_result) == 4:
+                    next_obs, reward, done, _ = step_result
+                else:
+                    next_obs, reward, terminated, truncated, _ = step_result
+                    done = terminated or truncated
+
+                next_state = self.discretize_state(next_obs)
+
+                best_next = np.argmax(self.Q_table[next_state])
+                self.Q_table[state][action] += self.alpha * (
+                    reward
+                    + self.gamma * self.Q_table[next_state][best_next]
+                    - self.Q_table[state][action]
+                )
+
+                state = next_state
+                current_score += reward
+
+            scores_array.append(current_score)
+            scores_window.append(current_score)
+            mean_score = np.mean(scores_window)
+            avg_scores_array.append(mean_score)
+            epsilons_array.append(eps)
+            shaped_scores_array.append(current_score)
+
+            if (episode + 1) % 2000 == 0:
+                print(f"Ep {episode+1} -> Avg: {mean_score:.1f}, Eps: {eps:.3f}")
+
+            if mean_score >= -110.0 and len(scores_window) >= 100:
+                print(f"Goal reached at episode {episode+1}! Mean score: {mean_score:.2f}")
+                break
+
+        return scores_array, avg_scores_array, epsilons_array, shaped_scores_array
