@@ -33,5 +33,11 @@ class QLearningAgent:
 
     idx_position = int(scaled[0] * (self.buckets[0] - 1))
     idx_velocity = int(scaled[1] * (self.buckets[1] - 1))
-
+    
     return (idx_position, idx_velocity)
+
+def choose_action(self, state, epsilon):
+    if self.rng.random() < epsilon:
+        return self.env.action_space.sample()
+    else:
+        return int(np.argmax(self.Q_table[state]))
