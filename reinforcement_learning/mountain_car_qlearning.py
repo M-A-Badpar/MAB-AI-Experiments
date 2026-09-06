@@ -41,3 +41,14 @@ def choose_action(self, state, epsilon):
         return self.env.action_space.sample()
     else:
         return int(np.argmax(self.Q_table[state]))
+
+def get_epsilon(self, episode):
+    if self.epsilon_strategy == "constant":
+        return 0.1
+    elif self.epsilon_strategy == "linear":
+        return max(0.01, 1.0 - episode / self.episodes)
+    elif self.epsilon_strategy == "exponential":
+        return max(0.01, 1.0 * math.exp(-0.0001 * episode))
+    elif self.epsilon_strategy == "logarithmic":
+        return max(0.01, 1.0 / (1.0 + 0.1*math.log(1 + episode)))
+    return 0.1
