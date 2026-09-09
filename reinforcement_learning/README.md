@@ -74,3 +74,39 @@ The agent computes the state-value function $V(s) = \max_a Q(s, a)$ over the dis
 </p>
 
 The surface confirms the learned physical behavior: states close to the goal (position $\ge 0.5$) have values near $0$, while states at the bottom of the valley with zero velocity have the lowest expected return.
+
+
+## Requirements
+
+* Python 3.8+
+* `gym` (or `gymnasium`)
+* `numpy`
+* `matplotlib`
+
+Install dependencies:
+```bash
+pip install gym numpy matplotlib
+```
+
+## Usage
+
+Run the baseline training and all comparative experiments:
+```bash
+python experiments.py
+```
+
+Train an agent and watch its performance:
+```python
+import gym
+from mountain_car_qlearning import QLearningAgent
+
+env = gym.make("MountainCar-v0")
+agent = QLearningAgent(
+    env=env,
+    buckets=(40, 40),
+    epsilon_strategy="exponential",
+    episodes=100000,
+)
+agent.train()
+agent.watch_agent(episodes=3)
+```
