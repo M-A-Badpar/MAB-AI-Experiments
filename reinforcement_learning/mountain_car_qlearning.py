@@ -138,3 +138,36 @@ class QLearningAgent:
             eval_scores.append(score)
             
         return eval_scores
+
+    def watch_agent(agent, episodes=5):
+    env = gym.make("MountainCar-v0", render_mode="human")
+
+    for episode in range(episodes):
+        reset_result = env.reset(seed=agent.seed + 200000 + episode)
+
+        if isinstance(reset_result, tuple):
+            obs = reset_result[0]
+        else:
+            obs = reset_result
+
+        state = agent.discretize_state(obs)
+        done = False
+        total_reward = 0
+
+        while not done:
+            action = int(np.argmax(agent.Q_table[state]))
+
+            step_result = env.step(action)
+
+            if len(step_result) == 4:
+                next_obs, reward, done, _ = step_result
+            else:
+                next_obs, reward, terminated, truncated, _ = step_result
+                done = terminated or truncated
+
+            state = agent.discretize_state(next_obs)
+            total_reward += reward
+
+        print(f"Episode {episode + 1} reward: {total_reward}")
+
+    env.close()
