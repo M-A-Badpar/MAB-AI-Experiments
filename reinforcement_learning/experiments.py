@@ -98,3 +98,33 @@ def run_bucket_experiments(episodes = 100000, seed = 400):
     plt.show()
 
     return results
+
+def plot_value_function(agent):
+    value_table = np.max(agent.Q_table, axis = 2)
+
+    unvisited = np.all(agent.Q_table == 0, axis = 2)
+    value_table_masked = np.array(value_table, dtype = float)
+    value_table_masked[unvisited] = np.nan
+
+    pos_min, pos_max = agent.lower_bounds[0], agent.upper_bounds[0]
+    vel_min, vel_max = agent.lower_bounds[1], agent.upper_bounds[1]
+
+    positions = np.linspace(pos_min, pos_max, agent.buckets[0])
+    velocities = np.linspace(vel_min, vel_max, agent.buckets[1])
+
+    X, Y = np.meshgrid(positions, velocities)
+    Z = value_table_masked.T
+
+    fig = plt.figure(figsize = (10, 5))
+    ax = fig.add_subplot(111, projection="3d")
+
+    surf = ax.plot_surface(X, Y, Z, cmap = "viridis", edgecolor = "none", alpha = 0.9)
+
+    ax.set_title(r"3D State-Value Function $V(s) = \max_a Q(s, a)$", fontsize = 12, fontweight = "bold")
+    ax.set_xlabel("Position")
+    ax.set_ylabel("Velocity")
+    ax.set_zlabel("Value V(s)")
+
+    fig.colorbar(surf, ax = ax, shrink = 0.5, aspect = 10)
+    plt.tight_layout()
+    plt.show()
