@@ -128,3 +128,23 @@ def plot_value_function(agent):
     fig.colorbar(surf, ax = ax, shrink = 0.5, aspect = 10)
     plt.tight_layout()
     plt.show()
+
+
+if __name__ == "__main__":
+    env = gym.make("MountainCar-v0")
+    main_agent = QLearningAgent(
+        env = env,
+        buckets = (40, 40),
+        alpha = 0.05,
+        gamma = 0.99,
+        epsilon_strategy = "exponential",
+        episodes = 100000,
+        seed = 400,
+    )
+
+    scores, avg_scores, epsilons, _ = main_agent.train()
+    plot_training_result(scores, avg_scores, epsilons, "Baseline Q-Learning Training")
+    plot_value_function(main_agent)
+
+    run_epsilon_experiments(episodes = 100000)
+    run_bucket_experiments(episodes = 100000)
