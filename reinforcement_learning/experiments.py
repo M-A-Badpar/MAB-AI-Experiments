@@ -22,3 +22,45 @@ def plot_training_result(scores, avg_scores, epsilons, title):
     plt.title(title, fontsize = 12, fontweight = "bold")
     plt.grid(True, alpha = 0.3)
     plt.show()
+
+def run_epsilon_experiments(episodes = 100000, buckets = (40, 40), seed = 400):
+    strategies = ["constant", "linear", "logarithmic", "exponential"]
+    results = {}
+
+    for strategy in strategies:
+        print(f"Running strategy: {strategy}")
+        agent = QLearningAgent(
+            env = gym.make("MountainCar-v0"),
+            buckets = buckets,
+            alpha = 0.05,
+            gamma = 0.99,
+            epsilon_strategy = strategy,
+            episodes = episodes,
+            seed = seed,
+        )
+
+        scores, avgs, eps, _ = agent.train()
+        results[strategy] = {"avgs": avgs, "eps": eps}
+        plot_training_result(scores, avgs, eps, f"Strategy: {strategy}")
+
+    plt.figure(figsize = (10, 5))
+    for s in strategies:
+        plt.plot(results[s]["avgs"], label=s)
+    plt.title("Epsilon Strategies Comparison")
+    plt.xlabel("Episodes")
+    plt.ylabel("Moving Average Reward")
+    plt.legend()
+    plt.grid(True, alpha = 0.3)
+    plt.show()
+
+    plt.figure(figsize = (10, 5))
+    for s in strategies:
+        plt.plot(results[s]["eps"], label=s)
+    plt.title("Epsilon Decay Schedules")
+    plt.xlabel("Episodes")
+    plt.ylabel("Epsilon")
+    plt.legend()
+    plt.grid(True, alpha = 0.3)
+    plt.show()
+
+    return results
