@@ -139,7 +139,7 @@ class QLearningAgent:
             
         return eval_scores
 
-    def watch_agent(agent, episodes=5):
+def watch_agent(agent, episodes=5):
     env = gym.make("MountainCar-v0", render_mode="human")
 
     for episode in range(episodes):
