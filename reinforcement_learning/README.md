@@ -24,15 +24,11 @@ MountainCar-v0 provides continuous observations:
 * Velocity: `[-0.07, 0.07]`
 
 To use tabular Q-learning, the continuous space is mapped into a discrete grid of bins (buckets), with a default size of `(40, 40)`:
-$$\text{index} = \left\lfloor \frac{\text{state} - \text{lower\_bound}}{\text{upper\_bound} - \text{lower\_bound}} \times \text{bucket\_size} \right\rfloor$$
+$$\text{index} = \left\lfloor \frac{\text{state} - \text{lower bound}}{\text{upper bound} - \text{lower bound}} \times \text{bucket size} \right\rfloor$$
 
 ### 2. Q-Learning Update Rule
 The agent updates action values using the standard off-policy Bellman equation:
 $$Q(s, a) \leftarrow Q(s, a) + \alpha \left( r + \gamma \max_{a'} Q(s', a') - Q(s, a) \right)$$
-
-where:
-* $\alpha = 0.05$ (learning rate)
-* $\gamma = 0.99$ (discount factor)
 
 where:
 * $\alpha = 0.05$ (learning rate)
