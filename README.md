@@ -3,3 +3,4 @@ Personal repository for AI, Machine Learning, and Control Systems projects at th
 
 ## Projects Index
 * **Adversarial Search:** [Checkers Minimax & Alpha-Beta Pruning](./adversarial_search)
+* **Reinforcement Learning:** [Tabular Q-Learning on MountainCar-v0](reinforcement_learning/)
