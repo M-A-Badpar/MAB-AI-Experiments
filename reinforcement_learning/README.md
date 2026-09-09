@@ -10,3 +10,8 @@ This project implements:
 * State discretization to convert continuous position and velocity into discrete grid bins.
 * Standard Q-learning algorithm with a Bellman update rule.
 * Multiple exploration strategies to compare learning stability and convergence speed.
+
+## Repository Structure
+
+* `mountain_car_qlearning.py`: Contains the main `QLearningAgent` class, discretization logic, Q-table update rule, and the `watch_agent` helper to render the trained car.
+* `experiments.py`: Runs baseline training, generates the 3D value function surface, and compares different epsilon decay strategies and bucket grid sizes.
