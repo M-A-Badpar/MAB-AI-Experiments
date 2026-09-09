@@ -64,3 +64,37 @@ def run_epsilon_experiments(episodes = 100000, buckets = (40, 40), seed = 400):
     plt.show()
 
     return results
+
+def run_bucket_experiments(episodes = 100000, seed = 400):
+    grids = [(5, 5), (100, 100)]
+    results = {}
+
+    print("\nRunning Discretization Bucket Experiments")
+
+    for grid in grids:
+        print(f"Running grid size: {grid}")
+        agent = QLearningAgent(
+            env = gym.make("MountainCar-v0"),
+            buckets = grid,
+            alpha = 0.05,
+            gamma = 0.99,
+            epsilon_strategy = "exponential",
+            episodes = episodes,
+            seed = seed,
+        )
+
+        _, avgs, _, _ = agent.train()
+        results[str(grid)] = avgs
+
+    plt.figure(figsize = (10, 5))
+    for grid in grids:
+        plt.plot(results[str(grid)], label = f"Grid {grid}")
+
+    plt.title("Discretization Bucket Sizes Comparison", fontsize = 12, fontweight = "bold")
+    plt.xlabel("Episodes")
+    plt.ylabel("Moving Average Reward")
+    plt.legend()
+    plt.grid(True, alpha = 0.3)
+    plt.show()
+
+    return results
